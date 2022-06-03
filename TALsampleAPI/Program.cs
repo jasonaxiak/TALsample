@@ -1,11 +1,15 @@
+using Entities;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<OccupationDBContext>(options => options.UseInMemoryDatabase(databaseName: "TALsample"));
 
 var app = builder.Build();
 
@@ -16,10 +20,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//Seed in-memory DB
+using (var scope = app.Services.CreateScope())
+{
+    DataGenerator.Initialize(scope.ServiceProvider);
+}
 
+//app.UseHttpsRedirection();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
