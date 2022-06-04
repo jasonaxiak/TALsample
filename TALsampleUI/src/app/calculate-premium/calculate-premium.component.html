@@ -3,7 +3,7 @@
   <div class="card-body">
     
     <form [formGroup]="premiumCalculatorForm">
-      
+
       <div class="form-group row">
         <label for="name" class="col-form-label col-sm-2">Name:</label>
         <div class="col-md-5">
@@ -11,6 +11,18 @@
         </div>
         <div class="col-md-5 text-danger">
           <em *ngIf="validateControl('name') && hasError('name', 'required')">Name is required</em>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="dob" class="col-form-label col-sm-2">Date of Birth:</label>
+        <div class="col-md-5">
+          <input type="date" max="{{youngestDob}}" min="{{oldestDob}}" id="dob" formControlName="dob" class="form-control" (change)="updateAge($event)" />
+        </div>
+        <div class="col-md-5 text-danger">
+          <em *ngIf="validateControl('dob') && hasError('dob', 'required')">DOB is required</em>
+        </div>
+        <div class="col-md-5 text-danger">
+          <em *ngIf="validateControl('dob') && (hasError('dob', 'min') || hasError('dob', 'max'))">Age must be between 18 and 90</em>
         </div>
       </div>
       <div class="form-group row">
@@ -26,18 +38,6 @@
         </div>
       </div>
       <div class="form-group row">
-        <label for="dob" class="col-form-label col-sm-2">Date of Birth:</label>
-        <div class="col-md-5">
-          <input type="date" id="dob" formControlName="dob" class="form-control" />
-        </div>
-        <div class="col-md-5 text-danger">
-          <em *ngIf="validateControl('dob') && hasError('dob', 'required')">DOB is required</em>
-        </div>
-        <div class="col-md-5 text-danger">
-          <em *ngIf="validateControl('dob') && (hasError('dob', 'min') || hasError('dob', 'max'))">Age must be between 18 and 90</em>
-        </div>
-      </div>
-      <div class="form-group row">
         <label for="sumInsured" class="col-form-label col-sm-2">Sum Insured:</label>
         <div class="col-md-5">
           <input type="text" id="sumInsured" formControlName="sumInsured" class="form-control" />
@@ -46,7 +46,7 @@
           <em *ngIf="validateControl('sumInsured') && hasError('sumInsured', 'required')">Sum Insured is required</em>
         </div>
         <div class="col-md-5 text-danger">
-          <em *ngIf="validateControl('sumInsured') && (hasError('sumInsured', 'min') || hasError('sumInsured', 'max'))">Sum insured must be between $100,000 and $1,000,000</em>
+          <em *ngIf="validateControl('sumInsured') && hasError('sumInsured', 'invalidRange')">Sum insured must be between $100,000 and $1,000,000</em>
         </div>
       </div>
       <div class="form-group row">
