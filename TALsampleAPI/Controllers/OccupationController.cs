@@ -15,6 +15,10 @@ namespace TALsampleAPI.Controllers
             _repository = repository;
         }
 
+        /// <summary>
+        /// Gets all occupation options from the database
+        /// </summary>
+        /// <returns>A list of occupations</returns>
         [HttpGet]
         public IActionResult Index()
         {

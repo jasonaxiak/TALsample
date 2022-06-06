@@ -16,7 +16,7 @@ namespace Entities
         {
             base.OnModelCreating(modelBuilder);
 
-            //Table Configurations
+            //Load all table configurations found in assembly
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 modelBuilder.ApplyConfigurationsFromAssembly(assembly);
