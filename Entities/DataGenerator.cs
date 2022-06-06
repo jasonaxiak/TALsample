@@ -7,7 +7,7 @@ namespace Entities
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            using var context = serviceProvider.GetService<OccupationDBContext>();
+            using var context = serviceProvider.GetService<OccupationDbContext>();
 
             //Populate occupation ratings, if not already populated
             if (!context.OccupationRatings.Any())

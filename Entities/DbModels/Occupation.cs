@@ -8,5 +8,7 @@ namespace Entities.DbModels
         public string Name { get; set; }
 
         public int OccupationRatingId { get; set; }
+
+        public OccupationRating OccupationRating { get; set; }
     }
 }

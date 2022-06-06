@@ -1,23 +1,24 @@
 ﻿using Entities;
+using Entities.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TALsampleAPI.Controllers
 {
-    [Route("api/occupation")]
+    [Route("api/occupations")]
     [ApiController]
     public class OccupationController : Controller
     {
-        private readonly OccupationDBContext _context;
+        private readonly IOccupationRepository _repository;
 
-        public OccupationController(OccupationDBContext context)
+        public OccupationController(IOccupationRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var occupations = _context.Occupations.ToList();
+            var occupations = _repository.GetOccupations();
             return Ok(occupations);
         }
     }

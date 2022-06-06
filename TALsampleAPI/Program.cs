@@ -1,15 +1,32 @@
 using Entities;
+using Entities.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<OccupationDBContext>(options => options.UseInMemoryDatabase(databaseName: "TALsample"));
+//Load db context for API (in-memory database)
+builder.Services.AddDbContext<OccupationDbContext>(options => options.UseInMemoryDatabase(databaseName: "TALsample"));
+
+//CORS Policy - allow all origins and methods (left open for testing purposes)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy",
+        builder =>
+        {
+            builder.WithOrigins("*")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+
+});
+
+//Inject Occupation Repository
+builder.Services.AddScoped<IOccupationRepository, OccupationRepository>();
 
 var app = builder.Build();
 
@@ -27,6 +44,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 //app.UseHttpsRedirection();
+app.UseCors("CorsPolicy");
 app.UseAuthorization();
 app.MapControllers();
 
