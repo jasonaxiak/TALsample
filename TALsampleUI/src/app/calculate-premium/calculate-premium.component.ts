@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
 import { DatePipe } from '@angular/common';
-import { currenyRangeValidator } from '../shared/validators/currency-range.validator';
+import { currencyRangeValidator } from '../shared/validators/currency-range.validator';
 import { CalculateAge, GetDobByAge } from '../shared/date-helper';
 import { PremiumService } from '../shared/services/premium.service';
 import { IOccupation } from '../_interfaces/premium/IOccupation.model'
@@ -13,16 +13,17 @@ import { Quote } from '../_interfaces/premium/IQuote.model'
   templateUrl: './calculate-premium.component.html',
   styleUrls: ['./calculate-premium.component.css']
 })
+
 export class CalculatePremiumComponent implements OnInit
 {
   //Date range for DOB form input 
   youngestDob: string = "";
   oldestDob: string = "";
 
-  calculationError: string = "";
-
+  //List of all occupation options
   occupations = new Array<IOccupation>();
 
+  //Place holder for the calculated premium
   monthlyPremiumTotal: number = 0;
 
   //Premium calculator form
@@ -41,12 +42,10 @@ export class CalculatePremiumComponent implements OnInit
     this.premiumService.getOccupations()
       .subscribe(value =>
       {
-        if (value == null) {
-          this.calculationError = "Unable to get occupations";
-          console.log(this.calculationError);
-        } else {
+        if (value == null)
+          console.log("Unable to get occupations");
+        else 
           this.occupations = value;
-        }
       });
   }
 
@@ -57,10 +56,10 @@ export class CalculatePremiumComponent implements OnInit
       age: new FormControl("", [Validators.required, Validators.min(18), Validators.max(90)]),
       dob: new FormControl("", [Validators.required]),
       occupation: new FormControl(this.occupations, [Validators.required]),
-      sumInsured: new FormControl("", [Validators.required, currenyRangeValidator(1000, 10000)])
+      sumInsured: new FormControl("", [Validators.required, currencyRangeValidator(1000, 10000)])
     });
 
-    //Set-up event to format currency value
+    //Set-up event to format currency value, in sum insured input field
     this.premiumCalculatorForm.valueChanges.subscribe(form => {
       if (form.sumInsured) {
         this.premiumCalculatorForm.patchValue({
@@ -83,7 +82,7 @@ export class CalculatePremiumComponent implements OnInit
     { emitEvent: false });
   }
 
-  //Event handler to calculate premium
+  //Event handler to calculate premium to be displayed
   public calculatePremium() {
     if (this.premiumCalculatorForm.valid) {
       var quote = new Quote(

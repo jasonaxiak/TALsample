@@ -16,6 +16,11 @@ namespace TALsampleAPI.Controllers
         }
 
         // POST: QuoteController
+        /// <summary>
+        /// Quotes posted to this method, will have their premium calculated
+        /// </summary>
+        /// <param name="quote">A quote object containing the initial data required to produce a final quote</param>
+        /// <returns>A copy of the completed quote, containing the calculated premium</returns>
         [HttpPost]
         public IActionResult Index(Quote quote)
         {
