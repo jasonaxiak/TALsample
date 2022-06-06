@@ -7,7 +7,7 @@
 
 - Age must be between 18 and 90 years old
 
-- Age must mathematically match the date of birth provided
+- Age will be calculated from the date of birth provided
 
 - Sum insured amount must be between $1,000 and $10,000
 
